@@ -1,0 +1,104 @@
+﻿@model Web_App_Local.ViewModels.CategoryDetailsView
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div>
+        <h5 class="text-uppercase p-2 text-center">List of Categories</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Categories.FirstOrDefault().CategoryId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Categories.FirstOrDefault().CategoryRowId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Categories.FirstOrDefault().CategoryName)
+
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Categories.FirstOrDefault().BasePrice)
+
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Categories)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryRowId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BasePrice)
+                    </td>
+                    <td>
+                        <a asp-action="Index" asp-route-CategoryRowId="@item.CategoryRowId">Select</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+      </div>
+    <div>
+        <h5 class="text-uppercase p-2 text-center">List of Products</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Products.FirstOrDefault().ProductId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Products.FirstOrDefault().ProductName)
+
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Products.FirstOrDefault().Price)
+
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Products)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProductId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProductName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        @*<td>
+                            <a asp-action="Edit" asp-route-id="@item.CategoryRowId">Edit</a> |
+                            <a asp-action="Delete" asp-route-id="@item.CategoryRowId">Delete</a>
+                        </td>*@
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</body>
+</html>
