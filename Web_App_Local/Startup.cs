@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Web_App_Local.CustomFilters;
 using Web_App_Local.Data;
 using Web_App_Local.Models;
 using Web_App_Local.Services;
@@ -42,6 +43,14 @@ namespace Web_App_Local
                 )
            );
 
+            services.AddDbContext<LogDbContext>(options =>
+           options.UseSqlServer(
+               Configuration.GetConnectionString("AppDbConnection")
+               )
+          );
+
+
+
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -49,8 +58,13 @@ namespace Web_App_Local
 
             services.AddScoped<IRepository<Product, int>, ProductRepository>();
 
+            services.AddScoped<CustomExceptionFilter>();
+          //  services.AddScoped<IRepository<CustomException, int>, ExceptionRepository>();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add(typeof( CustomExceptionFilter));
+            });
             services.AddRazorPages();
 
         }

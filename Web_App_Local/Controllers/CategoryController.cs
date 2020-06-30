@@ -44,6 +44,8 @@ namespace Web_App_Local.Controllers
         {
            if (ModelState.IsValid)
             {
+                if (category.BasePrice < 0)
+                    throw new Exception("Base Price cannot ne -ve");
                 category = await catRepository.CreateAsync(category);
                 return RedirectToAction("Index");
             }

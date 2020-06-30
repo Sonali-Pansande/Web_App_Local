@@ -27,5 +27,6 @@ namespace Web_App_Local.Models
                     }
 
         public DbSet<Web_App_Local.ViewModels.CategoryDetailsView> CategoryDetailsView { get; set; }
+
     }
 }

@@ -13,11 +13,12 @@ namespace Web_App_Local.Controllers
     public class ProductController : Controller
     {
         private readonly IRepository<Product, int> ProdRepository;
+        private readonly IRepository<Category, int> CatRepository;
 
-        public ProductController(IRepository<Product, int> ProdRepository)
+        public ProductController(IRepository<Product, int> ProdRepository, IRepository<Category, int> CatRepository)
         {
             this.ProdRepository = ProdRepository;
-
+            this.CatRepository = CatRepository;
         }
          
         public async Task<ActionResult> Index()
@@ -28,8 +29,12 @@ namespace Web_App_Local.Controllers
 
 
         
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
+            var prd = new Product();
+            ViewBag.CategoryRowId =
+                new SelectList(await CatRepository.GetAsync(), "CategoryRowId", "CategoryName");
+
             return View(new Product());
         }
 
@@ -39,6 +44,8 @@ namespace Web_App_Local.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (product.Price < 0)
+                    throw new Exception("Base Price cannot ne -ve");
                 product = await ProdRepository.CreateAsync(product);
                 return RedirectToAction("Index");
             }

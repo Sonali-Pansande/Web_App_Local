@@ -20,7 +20,8 @@ namespace Web_App_Local.Models
         [Required(ErrorMessage = "Category Name is must")]
         [StringLength(200)]
         public string CategoryName { get; set; }
-
+    //    [NumericValidator(ErrorMessage = "Value Cannot be -ve")]
+   
         [Required(ErrorMessage = "BasePrice cannot be null")]
         public int BasePrice { get; set; }
 
@@ -56,4 +57,33 @@ namespace Web_App_Local.Models
         public Category Category { get; set; }
 
     }
-  }
+
+    public class CustomException
+    {
+        [Key]
+        public int LogId { get; set; }
+        public string ControllerName { get; set; }
+
+        public string ActionName { get; set; }
+
+        public string ExceptionMessage { get; set; }
+
+        public DateTime Loggingdate { get; set; }
+
+    }
+
+        public class NumericValidatorAttribute : ValidationAttribute
+         {
+            public override bool IsValid(object value)
+            {
+                if (Convert.ToInt32(value) < 0)
+                {
+                    return false;
+
+                }
+                return true;
+            }
+
+        }
+
+    }
