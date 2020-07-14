@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Web_App_Local.Models;
@@ -11,6 +12,7 @@ using Web_App_Local.Services;
 namespace Web_App_Local.Controllers
 {
     [Route("api/[controller]")]
+  //  [Authorize]
     [ApiController]
     public class CategoryAPIController : ControllerBase
     {
@@ -35,15 +37,29 @@ namespace Web_App_Local.Controllers
             return Ok(cats);
         }
 
-        [HttpPost("{CategoryId}/{CategoryName}/{BasePrice}")]
-        public async Task<IActionResult> Post([FromRoute]Category cat)
+        [HttpPost]
+   //     [HttpPost("{CategoryId}/{CategoryName}/{BasePrice}")]
+       // public async Task<IActionResult> Post([FromRoute]Category cat)
+        public async Task<IActionResult> Post(Category cat)
+
         {
-            if (ModelState.IsValid)
-            {
-                var cats = await catRepo.CreateAsync(cat);
-                return Ok(cats);
-            }
-            return BadRequest();
+            //try
+            //{
+
+                if (ModelState.IsValid)
+                {
+                    if (cat.BasePrice < 2000)
+                     throw new Exception("Salary Validation Failed");
+                    
+                     var cats = await catRepo.CreateAsync(cat);
+                    return Ok(cats);
+                }
+                return BadRequest();
+            //}
+            //catch(Exception ex)
+            //{
+            //    return StatusCode(500, ex.Message);
+            //}
         }
 
         [HttpPut("{id}")]

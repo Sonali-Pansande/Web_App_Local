@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Web_App_Local.CustomSessions;
 using Web_App_Local.Models;
 using Web_App_Local.Services;
 
@@ -84,6 +85,15 @@ namespace Web_App_Local.Controllers
             return RedirectToAction("Index");
         }
 
-         
+        public IActionResult ShowProducts(int id)
+        {
+            HttpContext.Session.SetInt32("CategoryRowId",id);
+            var cat = catRepository.GetAsync(id).Result;
+
+            HttpContext.Session.SetSessionData<Category>("Category", cat);
+            return RedirectToAction("Index", "Product");
+        }
+
+
     }
 }
